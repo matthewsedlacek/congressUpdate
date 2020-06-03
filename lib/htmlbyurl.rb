@@ -1,6 +1,6 @@
 class HTMLByURL
     attr_reader :url, :logger
-    attr_accessor :clean, :code, :body
+    attr_accessor :clean, :code, :response
 
     def initialize(url, logger = false)
         @url = url
@@ -11,7 +11,7 @@ class HTMLByURL
         begin
           response = RestClient.get(url)
           @code = response.code
-          @body = response.body
+          @response = response
         rescue RestClient::BadRequest => e
           @code = e.http_code
         rescue RestClient::NotFound => e
