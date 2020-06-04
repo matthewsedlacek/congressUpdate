@@ -7,11 +7,12 @@ class UpdateFromBP
         @save_success = false
         @update_data = Hash.new
         parse_info
+        update_db
     end
 
     def parse_info
         info = @doc.css('.infobox')
-        @update_data[:candidate_name] = @doc.css('#firstHeading').text      #|| @obj.candidate_name
+        @update_data[:bp_link] = @doc.css('#firstHeading').text.gsub(" ", "_")
         widgets = info.css('.widget-row')
         links = info.css('a')
         
@@ -21,7 +22,6 @@ class UpdateFromBP
         end
         
         @update_data[:photo_url] = info.css('img')[0].attributes["src"].value
-        binding.pry
     end
 
     def parse_link_map
@@ -30,18 +30,27 @@ class UpdateFromBP
             when "Official website"
                 @update_data[:official_url] = link[:url]
             when "Official Facebook"
-                @update_data[:official_facebook] = link[:url]
+                @update_data[:official_facebook] = strip_domain(link[:url])
             when "Official Twitter"
-                @update_data[:official_twitter] = link[:url]    
+                @update_data[:official_twitter] = strip_domain(link[:url])    
             when "Campaign website"
                 @update_data[:campaign_url] = link[:url]
             when "Campaign Facebook"
-                @update_data[:campaign_facebook] = link[:url]
+                @update_data[:campaign_facebook] = strip_domain(link[:url])
             when "Personal Twitter"
-                @update_data[:personal_twitter] = link[:url]
+                @update_data[:personal_twitter] = strip_domain(link[:url])
             when "Campaign Twitter"
-                @update_data[:campaign_twitter] = link[:url]
+                @update_data[:campaign_twitter] = strip_domain(link[:url])
             end
         end
+    end
+
+    def strip_domain(url)
+        url.split("/").last
+    end
+
+    def update_db
+        @update_data[:update_status] = @update_data.length
+        @save_success = @obj.update(@update_data)
     end
 end
