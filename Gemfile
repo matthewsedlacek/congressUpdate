@@ -10,4 +10,6 @@ gem 'rest-client'
 gem 'pg'
 gem 'activerecord', '~> 5.2.3', :require => 'active_record'
 gem 'pry'
+gem 'tty-prompt'
+
 
