@@ -1,4 +1,4 @@
-class NewBPSearchAttempt
+class BPSearchAttempt
     attr_reader :result, :doc
 
     def initialize(name)

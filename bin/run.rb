@@ -8,7 +8,8 @@ require_relative '../config/environment.rb'
 # puts "Attempting GET from Ballotpedia for #{name}"
 
 
-new_search = NewBPSearchAttempt.new("Ted_Cruz")
+new_search = BPSearchAttempt.new("Mitch_McConnell")
+teddie = UpdateFromBP.new(nil, new_search.doc)
 
 # query = NewDataPrompt.new(old: "Steve_King", prompt: "What would you like to try instead?")
 # puts query.response
